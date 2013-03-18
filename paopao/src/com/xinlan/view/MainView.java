@@ -89,8 +89,8 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 			long end = System.currentTimeMillis();
 			// System.out.println(end - start);
 			try {
-				if (end - start < 25) {
-					Thread.sleep(25 - (end - start));
+				if (end - start < 15) {
+					Thread.sleep(15 - (end - start));
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -100,6 +100,7 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		genBubble.onTouchEvent(event);
 		return true;
 	}
 
