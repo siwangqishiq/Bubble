@@ -25,11 +25,15 @@ public class Common {
 			int top, int width, int height) {
 		int x2 = left + width / 2;
 		int y2 = top + height / 2;
-		if (Math.abs(x - x2) < (radius + width / 2)
-				&& Math.abs(y - y2) < (radius + height / 2)) {
-			return true;
-		}
-		return false;
+		return (Math.abs(x - x2) < (radius + width / 2) && Math.abs(y - y2) < (radius + height / 2));
+	}
+
+	public static boolean isCircleHit(float x1, float y1, float r1, float x2,
+			float y2, float r2) {
+		float deltaX = x2 - x1;
+		float deltaY = y2 - y1;
+		float len = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+		return len <= r1 + r2;
 	}
 
 	/**

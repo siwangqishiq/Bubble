@@ -17,10 +17,10 @@ public class GenBubble {
 	public static final int STATUS_FIRING = 3;
 	public static final int STATUS_CANLOAD = 4;
 
+	private MainView context;
 	private float x, y;
-	// private float bubble_x,bubble_y;
 	private float bubbleGenSpeed = 1f;
-	private int status;
+	public int status;
 
 	private Bubble mBubble;
 	private Paint mPaint;
@@ -31,7 +31,8 @@ public class GenBubble {
 	private float absSpeed = 25f;
 	private float mBubble_dx, mBubble_dy;
 
-	public GenBubble() {
+	public GenBubble(MainView context) {
+		this.context = context;
 		status = STATUS_WAIT;
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
@@ -44,48 +45,39 @@ public class GenBubble {
 	}
 
 	public void draw(Canvas canvas) {
-		mPaint.setColor(mBubble.getColor());
-		canvas.drawCircle(mBubble.x, mBubble.y, mBubble.radius, mPaint);
+		if (mBubble != null) {
+			mBubble.draw(canvas);
+		}
 	}
 
 	public void logic() {
 		switch (status) {
-		case STATUS_WAIT:
+		case STATUS_WAIT:// 等待
 			waitDelay--;
 			if (waitDelay == 0) {
 				status = STATUS_CANLOAD;
 			}
 			break;
-		case STATUS_CANLOAD:
+		case STATUS_CANLOAD:// 创建新泡泡
 			mBubble = new Bubble(x, y, genColor());
 			status = STATUS_RELOAD;
 			break;
-		case STATUS_RELOAD:
+		case STATUS_RELOAD:// 装填新泡泡
 			mBubble.y += bubbleGenSpeed;
 			if (mBubble.y >= mBubble.radius) {
 				mBubble.y = mBubble.radius;
 				status = STATUS_READY;
 			}
 			break;
-		case STATUS_FIRING:
-			mBubble.x += mBubble_dx;
-			mBubble.y += mBubble_dy;
-			if (mBubble.x <= -mBubble.radius
-					|| mBubble.x > MainView.screenW + mBubble.radius
-					|| mBubble.y <= -mBubble.radius
-					|| mBubble.y > MainView.screenH + mBubble.radius) {
-				status = STATUS_CANLOAD;
-				mBubble=null;
-				System.gc();
-			}
+		case STATUS_FIRING:// 发射泡泡
+			context.getGroupBubbles().setTempBubble(mBubble);
 			break;
 		case STATUS_READY:
 			break;
-
 		}// end switch
 	}
 
-	private int genColor() {
+	public static int genColor() {
 		return colors[Common.genRand(0, colors.length)];
 	}
 
@@ -107,6 +99,8 @@ public class GenBubble {
 				.sqrt(vector_x * vector_x + vector_y * vector_y);// 计算单位向量
 		mBubble_dx = absSpeed * (vector_x / len);
 		mBubble_dy = absSpeed * (vector_y / len);
+		mBubble.dx = mBubble_dx;
+		mBubble.dy = mBubble_dy;
 	}
 
 }// end class

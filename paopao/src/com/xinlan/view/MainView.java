@@ -2,6 +2,7 @@ package com.xinlan.view;
 
 import com.xinlan.bubble.component.Bubble;
 import com.xinlan.bubble.component.GenBubble;
+import com.xinlan.bubble.component.GroupBubbles;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -26,6 +27,7 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 	public static int GAME_STATE = 1;
 	
 	private GenBubble genBubble;
+	private GroupBubbles groupBubbles;
 
 	public MainView(Context context) {
 		super(context);
@@ -54,7 +56,9 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 	public void init() {
 		GAME_STATE = 1;
 		Bubble.RADIUS=screenW/20;
-		genBubble = new GenBubble();
+		genBubble = new GenBubble(this);
+		groupBubbles=new GroupBubbles(this);
+		groupBubbles.init();
 		
 	}
 
@@ -66,6 +70,7 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 				case 1:
 					canvas.drawColor(Color.WHITE);
 					genBubble.draw(canvas);
+					groupBubbles.draw(canvas);
 					break;
 				}
 			}// end if
@@ -79,6 +84,7 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 
 	public void logic() {
 		genBubble.logic();
+		groupBubbles.logic();
 	}
 
 	public void run() {
@@ -110,5 +116,21 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
+	}
+	
+	public GenBubble getGenBubble() {
+		return genBubble;
+	}
+
+	public void setGenBubble(GenBubble genBubble) {
+		this.genBubble = genBubble;
+	}
+
+	public GroupBubbles getGroupBubbles() {
+		return groupBubbles;
+	}
+
+	public void setGroupBubbles(GroupBubbles groupBubbles) {
+		this.groupBubbles = groupBubbles;
 	}
 }// end class
