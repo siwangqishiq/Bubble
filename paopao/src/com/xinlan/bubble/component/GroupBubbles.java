@@ -5,7 +5,9 @@ import java.util.LinkedList;
 import com.xinlan.utils.Common;
 import com.xinlan.view.MainView;
 
+import android.annotation.SuppressLint;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 
 /**
@@ -13,6 +15,7 @@ import android.graphics.Paint;
  * @author Administrator
  * 
  */
+@SuppressLint({ "FloatMath", "FloatMath" })
 public class GroupBubbles {
 	private MainView context;
 	private float center_x, center_y;
@@ -20,11 +23,14 @@ public class GroupBubbles {
 	private Bubble tempBubble;// 临时泡泡
 	private Paint paint;
 	private GenBubble genBubble;
+	private double dRotate = -0.01;
+	Matrix rotateMatrix = new Matrix();
 
 	public GroupBubbles(MainView context) {
 		this.context = context;
 		genBubble = context.getGenBubble();
 		root = new LinkedList<Bubble>();
+		rotateMatrix.reset();
 		paint = new Paint();
 		paint.setAntiAlias(true);
 		center_x = MainView.screenW / 2;
@@ -80,9 +86,33 @@ public class GroupBubbles {
 				}// end for
 			}
 		}// end if
+		
+		// group do something
+		for (Bubble bubble : root) {
+			rotateItem(bubble);
+		}// end for
 	}
 
-	private boolean isBubbleHit(final Bubble moveBubble, final Bubble bubble) {
+	/**
+	 * p2.x = p0.x + (p1.x-p0.x) * cos (a) - (p1.y-p0.y) * sin(a) 
+	 * p2.y = p0.y + (p1.y-p0.y) * cos(a) + (p1.x-p0.x) * sin(a);
+	 * 
+	 * @param bubble
+	 * @param centerX
+	 * @param centerY
+	 */
+	private void rotateItem(Bubble bubble) {
+		float x = bubble.x;
+		float y = bubble.y;
+		float sinA = (float) Math.sin(dRotate);
+		float cosA = (float) Math.cos(dRotate);
+		float newX = center_x + (x - center_x) * cosA - (y - center_y) * sinA;
+		float newY = center_y + (y - center_y) * cosA + (x - center_x) * sinA;
+		bubble.x = newX;
+		bubble.y = newY;
+	}
+
+	private boolean isBubbleHit(final Bubble moveBubble, final Bubble bubble) {	
 		return Common.isCircleHit(moveBubble.x, moveBubble.y,
 				moveBubble.radius, bubble.x, bubble.y, bubble.radius);
 	}

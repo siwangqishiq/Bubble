@@ -41,7 +41,7 @@ public class GenBubble {
 	}
 
 	public void genOneBubble() {
-
+		
 	}
 
 	public void draw(Canvas canvas) {
