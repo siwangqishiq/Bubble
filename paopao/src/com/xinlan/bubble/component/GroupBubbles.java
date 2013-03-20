@@ -108,11 +108,12 @@ public class GroupBubbles {
 
 		if (Math.abs(rotateSpeed) > 0.000001f) {
 			for (Bubble bubble : root) {
-				rotateItem(bubble,rotateSpeed);
+				rotateItem(bubble, rotateSpeed);
 			}// end for
-			int flag=-1*Common.getFlag(rotateSpeed);
-			rotateSpeed+=flag*descdRotate;
+			int flag = -1 * Common.getFlag(rotateSpeed);
+			rotateSpeed += flag * descdRotate;
 		} else {
+			rotateSpeed = 0.0f;
 		}
 
 	}
@@ -122,7 +123,7 @@ public class GroupBubbles {
 				.distance(bubble.x, bubble.y, center_x, center_y);
 		float force = VectorUtil.calCosTwoVector(bubble.dx, bubble.dy,
 				center_x, 0);
-		rotateSpeed = distance * force /2000;
+		rotateSpeed = distance * force / 2000;
 	}
 
 	/**
