@@ -15,8 +15,8 @@ import android.graphics.Paint;
  * 
  */
 public class GroupBubbles {
-	public static final int ROW_NUM = 7;
-	public static final int COL_NUM = 7;
+	public static final int ROW_NUM = 5;
+	public static final int COL_NUM = 5;
 
 	private MainView context;
 	private float center_x, center_y;
@@ -42,17 +42,25 @@ public class GroupBubbles {
 	}
 
 	public void init() {
-		float startX = center_x - ROW_NUM * Bubble.RADIUS + Bubble.RADIUS;
-		float startY = center_y - COL_NUM * Bubble.RADIUS + Bubble.RADIUS;
-		for (int i = 0; i < COL_NUM; i++) {
-			float cursor_y = startY + i * 2 * Bubble.RADIUS;
-			for (int j = 0; j < ROW_NUM; j++) {
-				Bubble bubble = new Bubble(startX + j * 2 * Bubble.RADIUS,
-						cursor_y, GenBubble.genColor());
-				root.add(bubble);
-			}// end for j
-		}// end for i
-		rotateAllWithAngle(-Math.PI / 4);
+		// float startX = center_x - ROW_NUM * Bubble.RADIUS + Bubble.RADIUS;
+		// float startY = center_y - COL_NUM * Bubble.RADIUS + Bubble.RADIUS;
+		// for (int i = 0; i < COL_NUM; i++) {
+		// float cursor_y = startY + i * 2 * Bubble.RADIUS;
+		// for (int j = 0; j < ROW_NUM; j++) {
+		// Bubble bubble = new Bubble(startX + j * 2 * Bubble.RADIUS,
+		// cursor_y, GenBubble.genColor());
+		// root.add(bubble);
+		// }// end for j
+		// }// end for i
+		// rotateAllWithAngle(-Math.PI / 4);
+		float totalR = 0;
+		root.add(new Bubble(center_x, center_y, GenBubble.genColor()));
+		totalR += Bubble.RADIUS + 3 + Bubble.RADIUS;
+		genInitBubble(center_x, center_y, 6, totalR);
+		totalR += Bubble.RADIUS + 3 + Bubble.RADIUS;
+		genInitBubble(center_x, center_y, 12, totalR);
+		totalR += Bubble.RADIUS + 3 + Bubble.RADIUS;
+		genInitBubble(center_x, center_y, 19, totalR);
 	}
 
 	public void setTempBubble(Bubble bubble) {
@@ -100,7 +108,7 @@ public class GroupBubbles {
 					hitList.remove();
 					hitList.clear();
 					System.gc();
-					System.out.println(rotateSpeed);
+					// System.out.println(rotateSpeed);
 				}// end if
 
 			}
@@ -126,6 +134,19 @@ public class GroupBubbles {
 		rotateSpeed = distance * force / 2000;
 	}
 
+	private void genInitBubble(float x, float y, int totals, float r) {
+		// float x=bubble.x,y=bubble.y;
+		float dAngle = (float) ((2 * Math.PI) / totals);
+		float angle = 0.0f;
+		for (int i = 0; i < totals; i++) {
+			Bubble newBubble = new Bubble(center_x
+					+ (float) (r * Math.cos(angle)), center_y
+					+ (float) (r * Math.sin(angle)), GenBubble.genColor());
+			root.add(newBubble);
+			angle += dAngle;
+		}
+	}
+
 	/**
 	 * 恢复形状
 	 * 
@@ -144,7 +165,14 @@ public class GroupBubbles {
 					* back_dy);
 			bubble.x = bubble.x + len * (back_dx / lens);
 			bubble.y = bubble.y + len * (back_dy / lens);
+
 		}
+	}
+
+	private void hitRelocation(Bubble bubble, LinkedList<Bubble> hitList) {
+		for (Bubble hitBubble : hitList) {
+
+		}// end for
 	}
 
 	/**
