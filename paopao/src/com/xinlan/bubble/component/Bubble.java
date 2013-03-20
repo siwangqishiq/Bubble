@@ -1,13 +1,17 @@
 package com.xinlan.bubble.component;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 
 public class Bubble {
+	public static Bitmap bitmap;
 	public static float RADIUS;
 	public float radius;
 	public float x,y;
 	public float dx,dy;
+	
 	private int color;
 	private Paint paint;
 	
@@ -39,5 +43,6 @@ public class Bubble {
 	
 	public void draw(Canvas canvas){
 		canvas.drawCircle(x, y, radius, paint);
+		//canvas.drawBitmap(bitmap, x-radius, y-radius, paint)
 	}
 }//end class
