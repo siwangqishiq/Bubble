@@ -3,6 +3,7 @@ package com.xinlan.bubble.component;
 import java.util.LinkedList;
 
 import com.xinlan.utils.Common;
+import com.xinlan.utils.VectorUtil;
 import com.xinlan.view.MainView;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
@@ -10,7 +11,7 @@ import android.graphics.Paint;
 
 /**
  * 
- * @author Administrator
+ * @author Panyi
  * 
  */
 public class GroupBubbles {
@@ -25,15 +26,15 @@ public class GroupBubbles {
 	private Paint paint;
 	private GenBubble genBubble;
 
-	private double dRotate = -0.01;
-	Matrix rotateMatrix = new Matrix();
+	private double dRotate = 0.0f;
+	private float rotateSpeed = 0.0f;
+	private float descdRotate = 0.0005f;
 
 	public GroupBubbles(MainView context) {
 		this.context = context;
 		genBubble = context.getGenBubble();
 		root = new LinkedList<Bubble>();
 		hitList = new LinkedList<Bubble>();
-		rotateMatrix.reset();
 		paint = new Paint();
 		paint.setAntiAlias(true);
 		center_x = MainView.screenW / 2;
@@ -52,10 +53,6 @@ public class GroupBubbles {
 			}// end for j
 		}// end for i
 		rotateAllWithAngle(-Math.PI / 4);
-	}
-
-	private void genSurroundBubble(Bubble bubble) {
-
 	}
 
 	public void setTempBubble(Bubble bubble) {
@@ -94,6 +91,7 @@ public class GroupBubbles {
 					for (Bubble bubble : hitList) {
 						hitRelocation(tempBubble, bubble);
 					}
+					hitRotate(tempBubble);
 					tempBubble.dx = 0;
 					tempBubble.dy = 0;
 					root.add(tempBubble);
@@ -102,16 +100,29 @@ public class GroupBubbles {
 					hitList.remove();
 					hitList.clear();
 					System.gc();
+					System.out.println(rotateSpeed);
 				}// end if
 
 			}
 		}// end if
 
-		// group do something
+		if (Math.abs(rotateSpeed) > 0.000001f) {
+			for (Bubble bubble : root) {
+				rotateItem(bubble,rotateSpeed);
+			}// end for
+			int flag=-1*Common.getFlag(rotateSpeed);
+			rotateSpeed+=flag*descdRotate;
+		} else {
+		}
 
-//		for (Bubble bubble : root) {
-//			rotateItem(bubble);
-//		}// end for
+	}
+
+	private void hitRotate(Bubble bubble) {
+		float distance = Common
+				.distance(bubble.x, bubble.y, center_x, center_y);
+		float force = VectorUtil.calCosTwoVector(bubble.dx, bubble.dy,
+				center_x, 0);
+		rotateSpeed = distance * force /2000;
 	}
 
 	/**
@@ -136,8 +147,8 @@ public class GroupBubbles {
 	}
 
 	/**
-	 * p2.x = p0.x + (p1.x-p0.x) * cos (a) - (p1.y-p0.y) * sin(a) p2.y = p0.y +
-	 * (p1.y-p0.y) * cos(a) + (p1.x-p0.x) * sin(a);
+	 * p2.x = p0.x + (p1.x-p0.x) * cos (a) - (p1.y-p0.y) * sin(a) p2.y = p0.y
+	 * +(p1.y-p0.y) * cos(a) + (p1.x-p0.x) * sin(a);
 	 * 
 	 * @param bubble
 	 * @param centerX

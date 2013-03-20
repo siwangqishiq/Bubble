@@ -8,6 +8,25 @@ public class Common {
 		return (new Random()).nextInt(max) % (max - min + 1) + min;
 	}
 
+	public static int getFlag(double rotateSpeed) {
+		return rotateSpeed >= 0 ? 1 : -1;
+	}
+
+	/**
+	 * 计算两点间距离
+	 * 
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 * @return
+	 */
+	public static float distance(float x1, float y1, float x2, float y2) {
+		float x = x2 - x1;
+		float y = y2 - y1;
+		return (float) Math.sqrt(x * x + y * y);
+	}
+
 	public static boolean isHit(int left1, int top1, int w1, int h1, int left2,
 			int top2, int w2, int h2) {
 		int x1 = left1 + w1 / 2;
