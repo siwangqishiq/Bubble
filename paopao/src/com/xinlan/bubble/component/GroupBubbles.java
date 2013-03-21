@@ -42,25 +42,16 @@ public class GroupBubbles {
 	}
 
 	public void init() {
-		// float startX = center_x - ROW_NUM * Bubble.RADIUS + Bubble.RADIUS;
-		// float startY = center_y - COL_NUM * Bubble.RADIUS + Bubble.RADIUS;
-		// for (int i = 0; i < COL_NUM; i++) {
-		// float cursor_y = startY + i * 2 * Bubble.RADIUS;
-		// for (int j = 0; j < ROW_NUM; j++) {
-		// Bubble bubble = new Bubble(startX + j * 2 * Bubble.RADIUS,
-		// cursor_y, GenBubble.genColor());
-		// root.add(bubble);
-		// }// end for j
-		// }// end for i
-		// rotateAllWithAngle(-Math.PI / 4);
-		float totalR = 0;
-		root.add(new Bubble(center_x, center_y, GenBubble.genColor()));
-		totalR += Bubble.RADIUS + 3 + Bubble.RADIUS;
-		genInitBubble(center_x, center_y, 6, totalR);
-		totalR += Bubble.RADIUS + 3 + Bubble.RADIUS;
-		genInitBubble(center_x, center_y, 12, totalR);
-		totalR += Bubble.RADIUS + 3 + Bubble.RADIUS;
-		genInitBubble(center_x, center_y, 19, totalR);
+		genBubbles(3);
+	}
+
+	private void genBubbles(int layer) {
+		for (int i = 0; i < layer; i++) {
+			if(i==0){
+				root.add(new Bubble(center_x, center_y, GenBubble.genColor()));
+			}
+			genInitBubble(center_x, center_y, 6*i, i*(Bubble.RADIUS + Bubble.RADIUS));
+		}// end for i
 	}
 
 	public void setTempBubble(Bubble bubble) {
@@ -171,7 +162,7 @@ public class GroupBubbles {
 
 	private void hitRelocation(Bubble bubble, LinkedList<Bubble> hitList) {
 		for (Bubble hitBubble : hitList) {
-
+			
 		}// end for
 	}
 

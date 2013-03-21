@@ -3,7 +3,6 @@ package com.xinlan.bubble.component;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.RectF;
 
 public class Bubble {
 	public static Bitmap bitmap;
