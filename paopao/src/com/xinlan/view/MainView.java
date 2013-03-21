@@ -1,6 +1,7 @@
 package com.xinlan.view;
 
 import com.xinlan.bubble.R;
+import com.xinlan.bubble.component.Arrow;
 import com.xinlan.bubble.component.Background;
 import com.xinlan.bubble.component.Bubble;
 import com.xinlan.bubble.component.GenBubble;
@@ -31,6 +32,7 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 	public static int GAME_STATE = 1;
 
 	private Background background;
+	public Arrow arrow;
 	private GenBubble genBubble;
 	private GroupBubbles groupBubbles;
 
@@ -68,6 +70,7 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 		Bubble.bitmap = ballBitmap;
 		background = new Background(this);
 		background.init();
+		arrow = new Arrow(this);
 		genBubble = new GenBubble(this);
 		groupBubbles = new GroupBubbles(this);
 		groupBubbles.init();
@@ -83,6 +86,7 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 					background.draw(canvas);
 					genBubble.draw(canvas);
 					groupBubbles.draw(canvas);
+					arrow.draw(canvas);
 					break;
 				}
 			}// end if
@@ -102,8 +106,8 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 	public void run() {
 		while (flag) {
 			long start = System.currentTimeMillis();
-			draw();
 			logic();
+			draw();
 			long end = System.currentTimeMillis();
 			// System.out.println(end - start);
 			try {

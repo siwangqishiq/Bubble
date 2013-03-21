@@ -161,6 +161,7 @@ public class GroupBubbles {
 	}
 
 	private void hitRelocation(Bubble bubble, LinkedList<Bubble> hitList) {
+		Bubble bitBubble=hitList.get(0);
 		for (Bubble hitBubble : hitList) {
 			
 		}// end for

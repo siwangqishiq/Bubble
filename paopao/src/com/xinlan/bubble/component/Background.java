@@ -20,7 +20,7 @@ public class Background {
 	public void init() {
 		bitmap = BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.bg);
-		srcRect = new Rect(0, 30, bitmap.getWidth(), bitmap.getHeight());
+		srcRect = new Rect(0, 120, bitmap.getWidth(), bitmap.getHeight());
 		dstRect = new Rect(0, 0, MainView.screenW, MainView.screenH);
 	}
 

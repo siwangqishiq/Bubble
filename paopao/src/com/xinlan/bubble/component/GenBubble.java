@@ -82,12 +82,24 @@ public class GenBubble {
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
-		if (STATUS_READY == status
-				&& MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_UP) {
-			float touch_x = event.getX();
-			float touch_y = event.getY();
-			calculateVector(touch_x, touch_y);
-			status = STATUS_FIRING;
+		float touch_x = event.getX();
+		float touch_y = event.getY();
+		if (STATUS_READY == status) {
+			switch(MotionEventCompat.getActionMasked(event)){
+			case MotionEvent.ACTION_DOWN:
+				context.arrow.isShow=true;
+				context.arrow.resetDegrees(touch_x-mBubble.x, touch_y-mBubble.y, mBubble.x);
+				break;
+			case MotionEvent.ACTION_MOVE:
+				context.arrow.isShow=true;
+				context.arrow.resetDegrees(touch_x-mBubble.x, touch_y-mBubble.y, mBubble.x);
+				break;
+			case MotionEvent.ACTION_UP:
+				calculateVector(touch_x, touch_y);
+				status = STATUS_FIRING;
+				context.arrow.isShow=false;
+				break;
+			}//end switch
 		}
 		return true;
 	}
