@@ -39,6 +39,19 @@ public class Common {
 		}
 		return false;
 	}
+	
+	public static boolean isHit(float left1, float top1, float w1, float h1, float left2,
+			float top2, float w2, float h2) {
+		float x1 = left1 + w1 / 2;
+		float y1 = top1 + h1 / 2;
+		float x2 = left2 + w2 / 2;
+		float y2 = top2 + h2 / 2;
+		if (Math.abs(x1 - x2) < (w1 / 2 + w2 / 2) - 10
+				&& Math.abs(y1 - y2) < (h1 / 2 + h2 / 2) - 10) {
+			return true;
+		}
+		return false;
+	}
 
 	public static boolean isCircleHit(int x, int y, int radius, int left,
 			int top, int width, int height) {

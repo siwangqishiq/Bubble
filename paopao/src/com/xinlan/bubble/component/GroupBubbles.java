@@ -24,7 +24,7 @@ public class GroupBubbles {
 	private LinkedList<Bubble> hitList;
 	private Bubble tempBubble;// 临时泡泡
 	private Paint paint;
-	private GenBubble genBubble;
+	//private GenBubble genBubble;
 
 	private double dRotate = 0.0f;
 	private float rotateSpeed = 0.0f;
@@ -213,6 +213,7 @@ public class GroupBubbles {
 	private boolean isBubbleHit(final Bubble moveBubble, final Bubble bubble) {
 		return Common.isCircleHit(moveBubble.x, moveBubble.y,
 				moveBubble.radius, bubble.x, bubble.y, bubble.radius);
+		//return Common.isHit(left1, top1, w1, h1, left2, top2, w2, h2)
 	}
 
 	public void addBubble(Bubble bubble) {
