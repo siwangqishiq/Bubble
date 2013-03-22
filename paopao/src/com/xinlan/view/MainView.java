@@ -3,6 +3,7 @@ package com.xinlan.view;
 import com.xinlan.bubble.R;
 import com.xinlan.bubble.component.Arrow;
 import com.xinlan.bubble.component.Background;
+import com.xinlan.bubble.component.BitmapDataContent;
 import com.xinlan.bubble.component.Bubble;
 import com.xinlan.bubble.component.GenBubble;
 import com.xinlan.bubble.component.GroupBubbles;
@@ -30,7 +31,8 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 	private Resources res = this.getResources();
 
 	public static int GAME_STATE = 1;
-
+	
+	public BitmapDataContent imageData;
 	private Background background;
 	public Arrow arrow;
 	private GenBubble genBubble;
@@ -65,9 +67,8 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 	public void init() {
 		GAME_STATE = 1;
 		Bubble.RADIUS = screenW / 25;
-		ballBitmap = BitmapFactory.decodeResource(getContext().getResources(),
-				R.drawable.bubble);
-		Bubble.bitmap = ballBitmap;
+		imageData = new BitmapDataContent(this);
+		imageData.loadImages();
 		background = new Background(this);
 		background.init();
 		arrow = new Arrow(this);

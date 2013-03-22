@@ -44,13 +44,13 @@ public class GroupBubbles {
 	}
 
 	public void init() {
-		genBubbles(5);
+		genBubbles(4);
 	}
 
 	private void genBubbles(int layer) {
 		for (int i = 0; i < layer; i++) {
 			if (i == 0) {
-				root.add(new Bubble(center_x, center_y, GenBubble.genColor()));
+				root.add(new Bubble(context.imageData,center_x, center_y, GenBubble.genColor()));
 			} else {
 				genInitBubble(center_x, center_y, 6 * i, i
 						* (Bubble.RADIUS + Bubble.RADIUS));
@@ -112,7 +112,7 @@ public class GroupBubbles {
 			}
 		}// end if
 		
-		if (Math.abs(rotateSpeed) > 0.01f) {
+		if (Math.abs(rotateSpeed) > 0.001f) {
 			// 提前计算出转动三角函数值
 			rotateSinA = (float) Math.sin(rotateSpeed);
 			rotateCosA = (float) Math.cos(rotateSpeed);
@@ -142,7 +142,7 @@ public class GroupBubbles {
 		float dAngle = (float) ((2 * Math.PI) / totals);
 		float angle = 0.0f;
 		for (int i = 0; i < totals; i++) {
-			Bubble newBubble = new Bubble(center_x
+			Bubble newBubble = new Bubble(context.imageData,center_x
 					+ (float) (r * Math.cos(angle)), center_y
 					+ (float) (r * Math.sin(angle)), GenBubble.genColor());
 			root.add(newBubble);

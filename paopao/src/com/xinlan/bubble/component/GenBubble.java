@@ -59,7 +59,7 @@ public class GenBubble {
 			}
 			break;
 		case STATUS_CANLOAD:// 创建新泡泡
-			mBubble = new Bubble(x, y, genColor());
+			mBubble = new Bubble(context.imageData,x, y, genColor());
 			status = STATUS_RELOAD;
 			break;
 		case STATUS_RELOAD:// 装填新泡泡
