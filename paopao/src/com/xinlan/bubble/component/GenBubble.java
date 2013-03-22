@@ -107,10 +107,10 @@ public class GenBubble {
 	private void calculateVector(float touch_x, float touch_y) {
 		float vector_x = touch_x - mBubble.x;
 		float vector_y = touch_y - mBubble.y;
-		float len = (float) Math
+		float vector_len = (float) Math
 				.sqrt(vector_x * vector_x + vector_y * vector_y);// 计算单位向量
-		mBubble_dx = absSpeed * (vector_x / len);
-		mBubble_dy = absSpeed * (vector_y / len);
+		mBubble_dx = absSpeed * (vector_x / vector_len);
+		mBubble_dy = absSpeed * (vector_y / vector_len);
 		mBubble.dx = mBubble_dx;
 		mBubble.dy = mBubble_dy;
 	}

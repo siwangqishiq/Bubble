@@ -30,6 +30,8 @@ public class GroupBubbles {
 	private float rotateSpeed = 0.0f;
 	private float descdRotate = 0.0005f;
 
+	private float rotateSinA, rotateCosA;// 转动三角函数
+
 	public GroupBubbles(MainView context) {
 		this.context = context;
 		genBubble = context.getGenBubble();
@@ -42,15 +44,17 @@ public class GroupBubbles {
 	}
 
 	public void init() {
-		genBubbles(3);
+		genBubbles(5);
 	}
 
 	private void genBubbles(int layer) {
 		for (int i = 0; i < layer; i++) {
-			if(i==0){
+			if (i == 0) {
 				root.add(new Bubble(center_x, center_y, GenBubble.genColor()));
+			} else {
+				genInitBubble(center_x, center_y, 6 * i, i
+						* (Bubble.RADIUS + Bubble.RADIUS));
 			}
-			genInitBubble(center_x, center_y, 6*i, i*(Bubble.RADIUS + Bubble.RADIUS));
 		}// end for i
 	}
 
@@ -68,6 +72,10 @@ public class GroupBubbles {
 	}
 
 	public void logic() {
+//		int i=0;
+//		while(i<10000000){
+//			i++;
+//		}
 		if (tempBubble != null) {
 			tempBubble.x += tempBubble.dx;
 			tempBubble.y += tempBubble.dy;
@@ -101,18 +109,22 @@ public class GroupBubbles {
 					System.gc();
 					// System.out.println(rotateSpeed);
 				}// end if
-
 			}
 		}// end if
-
-		if (Math.abs(rotateSpeed) > 0.000001f) {
-			for (Bubble bubble : root) {
+		
+		if (Math.abs(rotateSpeed) > 0.01f) {
+			// 提前计算出转动三角函数值
+			rotateSinA = (float) Math.sin(rotateSpeed);
+			rotateCosA = (float) Math.cos(rotateSpeed);
+			for (Bubble bubble : root) {// 所有泡泡旋转
 				rotateItem(bubble, rotateSpeed);
 			}// end for
 			int flag = -1 * Common.getFlag(rotateSpeed);
 			rotateSpeed += flag * descdRotate;
 		} else {
 			rotateSpeed = 0.0f;
+			rotateSinA = 0;
+			rotateCosA = 0;
 		}
 
 	}
@@ -156,14 +168,12 @@ public class GroupBubbles {
 					* back_dy);
 			bubble.x = bubble.x + len * (back_dx / lens);
 			bubble.y = bubble.y + len * (back_dy / lens);
-
 		}
 	}
 
 	private void hitRelocation(Bubble bubble, LinkedList<Bubble> hitList) {
-		Bubble bitBubble=hitList.get(0);
+		Bubble bitBubble = hitList.get(0);
 		for (Bubble hitBubble : hitList) {
-			
 		}// end for
 	}
 
@@ -187,12 +197,9 @@ public class GroupBubbles {
 	}
 
 	private void rotateItem(Bubble bubble, double angle) {
-		float x = bubble.x;
-		float y = bubble.y;
-		float sinA = (float) Math.sin(angle);
-		float cosA = (float) Math.cos(angle);
-		float newX = center_x + (x - center_x) * cosA - (y - center_y) * sinA;
-		float newY = center_y + (y - center_y) * cosA + (x - center_x) * sinA;
+		float deltaX = bubble.x - center_x, deltaY = bubble.y - center_y;
+		float newX = center_x + deltaX * rotateCosA - deltaY * rotateSinA;
+		float newY = center_y + deltaY * rotateCosA + deltaX * rotateSinA;
 		bubble.x = newX;
 		bubble.y = newY;
 	}

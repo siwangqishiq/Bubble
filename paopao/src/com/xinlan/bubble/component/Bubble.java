@@ -42,6 +42,5 @@ public class Bubble {
 	
 	public void draw(Canvas canvas){
 		canvas.drawCircle(x, y, radius, paint);
-		//canvas.drawBitmap(bitmap, x-radius, y-radius, paint)
 	}
 }//end class

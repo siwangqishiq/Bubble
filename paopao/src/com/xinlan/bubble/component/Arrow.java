@@ -48,7 +48,6 @@ public class Arrow {
 	public void resetDegrees(float pointx, float pointy, float x) {
 		float angle = VectorUtil.calCosTwoVectorAngle(pointx, pointy, x, 0);
 		degrees = (float) (angle * (180 / Math.PI));
-		System.out.println(degrees);
 	}
 
 	public void logic() {
