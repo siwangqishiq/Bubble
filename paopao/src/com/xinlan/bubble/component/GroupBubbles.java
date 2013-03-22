@@ -20,11 +20,11 @@ public class GroupBubbles {
 
 	private MainView context;
 	private float center_x, center_y;
-	private LinkedList<Bubble> root;
+	public LinkedList<Bubble> root;
 	private LinkedList<Bubble> hitList;
 	private Bubble tempBubble;// 临时泡泡
 	private Paint paint;
-	//private GenBubble genBubble;
+	private GenBubble genBubble;
 
 	private double dRotate = 0.0f;
 	private float rotateSpeed = 0.0f;
@@ -50,7 +50,8 @@ public class GroupBubbles {
 	private void genBubbles(int layer) {
 		for (int i = 0; i < layer; i++) {
 			if (i == 0) {
-				root.add(new Bubble(context.imageData,center_x, center_y, GenBubble.genColor()));
+				root.add(new Bubble(context.imageData, center_x, center_y,
+						GenBubble.genColor()));
 			} else {
 				genInitBubble(center_x, center_y, 6 * i, i
 						* (Bubble.RADIUS + Bubble.RADIUS));
@@ -71,11 +72,15 @@ public class GroupBubbles {
 		}// end for
 	}
 
+	private void removeBubble(Bubble bubble) {
+		context.disappear.addDisappearBubble(bubble);
+	}
+
 	public void logic() {
-//		int i=0;
-//		while(i<10000000){
-//			i++;
-//		}
+		// int i=0;
+		// while(i<10000000){
+		// i++;
+		// }
 		if (tempBubble != null) {
 			tempBubble.x += tempBubble.dx;
 			tempBubble.y += tempBubble.dy;
@@ -95,6 +100,10 @@ public class GroupBubbles {
 				}// end for
 
 				if (hitList.size() >= 1) {
+					if (tempBubble.getColor() == hitList.get(0).getColor()) {
+						removeBubble(hitList.get(0));
+						removeBubble(tempBubble);
+					}
 					for (Bubble bubble : hitList) {
 						hitRelocation(tempBubble, bubble);
 					}
@@ -111,7 +120,7 @@ public class GroupBubbles {
 				}// end if
 			}
 		}// end if
-		
+
 		if (Math.abs(rotateSpeed) > 0.001f) {
 			// 提前计算出转动三角函数值
 			rotateSinA = (float) Math.sin(rotateSpeed);
@@ -142,7 +151,7 @@ public class GroupBubbles {
 		float dAngle = (float) ((2 * Math.PI) / totals);
 		float angle = 0.0f;
 		for (int i = 0; i < totals; i++) {
-			Bubble newBubble = new Bubble(context.imageData,center_x
+			Bubble newBubble = new Bubble(context.imageData, center_x
 					+ (float) (r * Math.cos(angle)), center_y
 					+ (float) (r * Math.sin(angle)), GenBubble.genColor());
 			root.add(newBubble);
@@ -213,7 +222,7 @@ public class GroupBubbles {
 	private boolean isBubbleHit(final Bubble moveBubble, final Bubble bubble) {
 		return Common.isCircleHit(moveBubble.x, moveBubble.y,
 				moveBubble.radius, bubble.x, bubble.y, bubble.radius);
-		//return Common.isHit(left1, top1, w1, h1, left2, top2, w2, h2)
+		// return Common.isHit(left1, top1, w1, h1, left2, top2, w2, h2)
 	}
 
 	public void addBubble(Bubble bubble) {

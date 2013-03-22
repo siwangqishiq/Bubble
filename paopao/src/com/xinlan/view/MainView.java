@@ -5,6 +5,7 @@ import com.xinlan.bubble.component.Arrow;
 import com.xinlan.bubble.component.Background;
 import com.xinlan.bubble.component.BitmapDataContent;
 import com.xinlan.bubble.component.Bubble;
+import com.xinlan.bubble.component.DisappearContainer;
 import com.xinlan.bubble.component.GenBubble;
 import com.xinlan.bubble.component.GroupBubbles;
 
@@ -35,8 +36,9 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 	public BitmapDataContent imageData;
 	private Background background;
 	public Arrow arrow;
-	private GenBubble genBubble;
-	private GroupBubbles groupBubbles;
+	public GenBubble genBubble;
+	public GroupBubbles groupBubbles;
+	public DisappearContainer disappear;
 
 	private Bitmap ballBitmap;
 
@@ -75,6 +77,7 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 		genBubble = new GenBubble(this);
 		groupBubbles = new GroupBubbles(this);
 		groupBubbles.init();
+		disappear = new DisappearContainer(this);
 	}
 
 	public void draw() {
@@ -87,6 +90,7 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 					background.draw(canvas);
 					genBubble.draw(canvas);
 					groupBubbles.draw(canvas);
+					disappear.draw(canvas);
 					arrow.draw(canvas);
 					break;
 				}
@@ -102,6 +106,7 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 	public void logic() {
 		genBubble.logic();
 		groupBubbles.logic();
+		disappear.logic();
 	}
 
 	public void run() {

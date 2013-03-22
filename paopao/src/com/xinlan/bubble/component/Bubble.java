@@ -20,8 +20,14 @@ public class Bubble {
 	private RectF dstRect;
 	private float width, height;
 
+	public static final int STATUS_NORMAL = 1;
+	public static final int STATUS_DEAD = 2;;
+	public int status;
+	public float scale = 1.0f;
+
 	public Bubble(BitmapDataContent data, float x, float y, int color,
 			float dx, float dy) {
+		status = STATUS_NORMAL;
 		radius = RADIUS;
 		dataContent = data;
 		this.x = x;
@@ -59,7 +65,17 @@ public class Bubble {
 		dstRect.top = y - radius;
 		dstRect.right = dstRect.left + width;
 		dstRect.bottom = dstRect.top + height;
-		canvas.drawBitmap(bitmap, srcRect, dstRect, null);
+		switch (status) {
+		case STATUS_NORMAL:
+			canvas.drawBitmap(bitmap, srcRect, dstRect, null);
+			break;
+		case STATUS_DEAD:
+			canvas.save();
+			canvas.scale(scale, scale, x, y);
+			canvas.drawBitmap(bitmap, srcRect, dstRect, null);
+			canvas.restore();
+			break;
+		}
 		// canvas.drawBitmap(bitmap, x, y, null);
 	}
 }// end class
