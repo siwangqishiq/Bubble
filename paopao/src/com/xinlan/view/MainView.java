@@ -3,11 +3,13 @@ package com.xinlan.view;
 import com.xinlan.bubble.R;
 import com.xinlan.bubble.component.Arrow;
 import com.xinlan.bubble.component.Background;
+import com.xinlan.bubble.component.BgmPlayer;
 import com.xinlan.bubble.component.BitmapDataContent;
 import com.xinlan.bubble.component.Bubble;
 import com.xinlan.bubble.component.DisappearContainer;
 import com.xinlan.bubble.component.GenBubble;
 import com.xinlan.bubble.component.GroupBubbles;
+import com.xinlan.bubble.component.SoundPlayer;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -32,16 +34,15 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 	private Resources res = this.getResources();
 
 	public static int GAME_STATE = 1;
-	
+	public BgmPlayer bgmPlayer;
+	public SoundPlayer soundPlayer;
 	public BitmapDataContent imageData;
 	private Background background;
 	public Arrow arrow;
 	public GenBubble genBubble;
 	public GroupBubbles groupBubbles;
 	public DisappearContainer disappear;
-
-	private Bitmap ballBitmap;
-
+	
 	public MainView(Context context) {
 		super(context);
 		this.context = context;
@@ -70,6 +71,8 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 		GAME_STATE = 1;
 		Bubble.RADIUS = screenW / 25;
 		imageData = new BitmapDataContent(this);
+		soundPlayer = new SoundPlayer(this.getContext());
+		soundPlayer.loadSound();//载入声音
 		imageData.loadImages();
 		background = new Background(this);
 		background.init();
@@ -78,6 +81,8 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 		groupBubbles = new GroupBubbles(this);
 		groupBubbles.init();
 		disappear = new DisappearContainer(this);
+		bgmPlayer = new BgmPlayer(this.getContext());
+		bgmPlayer.playBmg();
 	}
 
 	public void draw() {
@@ -133,6 +138,9 @@ public class MainView extends SurfaceView implements Callback, Runnable {
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder) {
+		if(bgmPlayer!=null){
+			bgmPlayer.stopBgm();
+		}
 		flag = false;
 	}
 

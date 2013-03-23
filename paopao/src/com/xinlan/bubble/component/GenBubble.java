@@ -7,6 +7,7 @@ import android.graphics.Path;
 import android.support.v4.view.MotionEventCompat;
 import android.view.MotionEvent;
 
+import com.xinlan.bubble.R;
 import com.xinlan.utils.Common;
 import com.xinlan.view.MainView;
 
@@ -16,6 +17,7 @@ public class GenBubble {
 	public static final int STATUS_READY = 2;
 	public static final int STATUS_FIRING = 3;
 	public static final int STATUS_CANLOAD = 4;
+	public static final int STATUS_ISFIRING=5;
 
 	private MainView context;
 	private float x, y;
@@ -61,6 +63,7 @@ public class GenBubble {
 		case STATUS_CANLOAD:// 创建新泡泡
 			mBubble = new Bubble(context.imageData,x, y, genColor());
 			status = STATUS_RELOAD;
+			context.soundPlayer.playSound(R.raw.load_bubble);
 			break;
 		case STATUS_RELOAD:// 装填新泡泡
 			mBubble.y += bubbleGenSpeed;
@@ -71,6 +74,9 @@ public class GenBubble {
 			break;
 		case STATUS_FIRING:// 发射泡泡
 			context.getGroupBubbles().setTempBubble(mBubble);
+			status=STATUS_ISFIRING;
+			break;
+		case STATUS_ISFIRING:
 			break;
 		case STATUS_READY:
 			break;

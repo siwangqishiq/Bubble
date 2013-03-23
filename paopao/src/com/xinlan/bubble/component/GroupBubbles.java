@@ -2,6 +2,7 @@ package com.xinlan.bubble.component;
 
 import java.util.LinkedList;
 
+import com.xinlan.bubble.R;
 import com.xinlan.utils.Common;
 import com.xinlan.utils.VectorUtil;
 import com.xinlan.view.MainView;
@@ -60,6 +61,7 @@ public class GroupBubbles {
 	}
 
 	public void setTempBubble(Bubble bubble) {
+		context.soundPlayer.playSound(R.raw.fire_bubble);// 发射泡泡
 		this.tempBubble = bubble;
 	}
 
@@ -77,10 +79,6 @@ public class GroupBubbles {
 	}
 
 	public void logic() {
-		// int i=0;
-		// while(i<10000000){
-		// i++;
-		// }
 		if (tempBubble != null) {
 			tempBubble.x += tempBubble.dx;
 			tempBubble.y += tempBubble.dy;
@@ -98,11 +96,13 @@ public class GroupBubbles {
 						hitList.add(bubble);
 					}
 				}// end for
-
-				if (hitList.size() >= 1) {
-					if (tempBubble.getColor() == hitList.get(0).getColor()) {
+				if (hitList.size() >= 1) {// 碰撞
+					if (tempBubble.getColor() == hitList.get(0).getColor()) {//消除事件
+						context.soundPlayer.playSound(R.raw.kill_bubble);
 						removeBubble(hitList.get(0));
 						removeBubble(tempBubble);
+					} else {//无消除
+						context.soundPlayer.playSound(R.raw.click1);
 					}
 					for (Bubble bubble : hitList) {
 						hitRelocation(tempBubble, bubble);
@@ -117,7 +117,7 @@ public class GroupBubbles {
 					hitList.clear();
 					System.gc();
 					// System.out.println(rotateSpeed);
-				}// end if
+				}
 			}
 		}// end if
 
