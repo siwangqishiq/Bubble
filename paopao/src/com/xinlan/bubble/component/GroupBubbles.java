@@ -82,6 +82,18 @@ public class GroupBubbles {
 		if (tempBubble != null) {
 			tempBubble.x += tempBubble.dx;
 			tempBubble.y += tempBubble.dy;
+			if (tempBubble.x <= tempBubble.radius
+					|| tempBubble.x > MainView.screenW - tempBubble.radius) {
+				tempBubble.dx *= -1;
+				context.soundPlayer.playSound(R.raw.click2);
+			}
+
+			if (tempBubble.y<=0 ||
+					tempBubble.y > MainView.screenH - tempBubble.radius) {// 碰到墙壁
+				tempBubble.dy *= -1;
+				context.soundPlayer.playSound(R.raw.click2);
+			}
+
 			if (tempBubble.x <= -tempBubble.radius// 越过边界
 					|| tempBubble.x > MainView.screenW + tempBubble.radius
 					|| tempBubble.y <= -tempBubble.radius
@@ -97,11 +109,11 @@ public class GroupBubbles {
 					}
 				}// end for
 				if (hitList.size() >= 1) {// 碰撞
-					if (tempBubble.getColor() == hitList.get(0).getColor()) {//消除事件
+					if (tempBubble.getColor() == hitList.get(0).getColor()) {// 消除事件
 						context.soundPlayer.playSound(R.raw.kill_bubble);
 						removeBubble(hitList.get(0));
 						removeBubble(tempBubble);
-					} else {//无消除
+					} else {// 无消除
 						context.soundPlayer.playSound(R.raw.click1);
 					}
 					for (Bubble bubble : hitList) {
@@ -143,6 +155,9 @@ public class GroupBubbles {
 				.distance(bubble.x, bubble.y, center_x, center_y);
 		float force = VectorUtil.calCosTwoVector(bubble.dx, bubble.dy,
 				center_x, 0);
+		if (bubble.y > center_y) {//若碰撞球在中点下方,则受力方向反向
+			force *= -1;
+		}
 		rotateSpeed = distance * force / 2000;
 	}
 
