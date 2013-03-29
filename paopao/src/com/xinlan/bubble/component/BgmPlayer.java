@@ -22,7 +22,7 @@ public class BgmPlayer {
 		} else if (rand == 2){
 			mediaPlayer = MediaPlayer.create(context, R.raw.bg3);
 		}
-		mediaPlayer.setVolume(0.5f, 0.5f);
+		mediaPlayer.setVolume(0.6f, 0.6f);
 		mediaPlayer.setLooping(true);// 循环播放
 	}
 
