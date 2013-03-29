@@ -1,13 +1,11 @@
 package com.xinlan.bubble.component;
 
 import java.util.LinkedList;
-
 import com.xinlan.bubble.R;
 import com.xinlan.utils.Common;
 import com.xinlan.utils.VectorUtil;
 import com.xinlan.view.MainView;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 
 /**
@@ -153,12 +151,27 @@ public class GroupBubbles {
 	private void hitRotate(Bubble bubble) {
 		float distance = Common
 				.distance(bubble.x, bubble.y, center_x, center_y);
-		float force = VectorUtil.calCosTwoVector(bubble.dx, bubble.dy,
-				center_x, 0);
-		if (bubble.y > center_y) {//若碰撞球在中点下方,则受力方向反向
-			force *= -1;
+		float force = Math.abs(VectorUtil.calCosTwoVector(bubble.dx, bubble.dy,
+				center_x, 0));
+		rotateSpeed = (distance * force / 2000)*detectRotateDir(bubble);
+	}
+	
+	private int detectRotateDir(Bubble bubble) {
+		float x = bubble.x, y = bubble.y;
+		float x0 = center_x, y0 = center_y;
+		if (y - y0 >= -(x - x0) && y - y0 >= x - x0) {
+			return -Common.getFlag(bubble.dx);
 		}
-		rotateSpeed = distance * force / 2000;
+		if (y - y0 < -(x - x0) && y - y0 >= x - x0) {
+			return -Common.getFlag(bubble.dy);
+		}
+		if (y - y0 < -(x - x0) && y - y0 < x - x0) {
+			return Common.getFlag(bubble.dx);
+		}
+		if (y - y0 >= -(x - x0) && y - y0 < x - x0) {
+			return Common.getFlag(bubble.dy);
+		}
+		return 1;
 	}
 
 	private void genInitBubble(float x, float y, int totals, float r) {
